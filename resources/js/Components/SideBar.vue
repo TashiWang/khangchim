@@ -8,9 +8,7 @@
         class="brand-image img-circle elevation-3"
         style="opacity: 1"
       />
-      <span class="brand-text font-weight-bold text-capitalize"
-        >Khangchim</span
-      >
+      <span class="brand-text font-weight-bold text-capitalize">Khangchim</span>
     </a>
 
     <!-- Sidebar -->
@@ -230,7 +228,7 @@
             </ul>
           </li>
 
-          <li class="nav-header">EXAMPLES</li>
+          <li class="nav-header">MORE MENUS</li>
           <li class="nav-item">
             <a href="pages/calendar.html" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>

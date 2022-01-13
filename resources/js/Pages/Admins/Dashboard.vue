@@ -11,12 +11,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3 v-if="loading">
-                  <div class="spinner-border text-secondary" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-                </h3>
-                <h3 v-else>{{ users.length }}</h3>
+                <h3>{{ users }}</h3>
 
                 <p>Users</p>
               </div>
@@ -50,12 +45,12 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+                <h3>{{ new_users }}</h3>
 
-                <p>User Registrations</p>
+                <p>New Users</p>
               </div>
               <div class="icon">
-                <i class="ion ion-person-add"></i>
+                <i class="fas fa-user-plus"></i>
               </div>
               <a href="#" class="small-box-footer"
                 >More info <i class="fas fa-arrow-circle-right"></i
@@ -230,32 +225,14 @@
 <script>
 import AdminLayout from "../../Layouts/AdminLayout.vue";
 export default {
+  props: ["new_users", "users"],
   components: {
     AdminLayout,
   },
-  data() {
-    return {
-      users: [],
-      loading: false,
-    };
-  },
+
   mounted() {
     this.getUsers();
   },
-  methods: {
-    getUsers() {
-      this.loading = true;
-      axios
-        .get("/api/users")
-        .then((response) => {
-          this.loading = false;
-          this.users = response.data;
-        })
-        .catch((error) => {
-          // handle error
-        })
-        .then(function () {});
-    },
-  },
+  methods: {},
 };
 </script>

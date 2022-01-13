@@ -1,6 +1,9 @@
 <template>
   <div>
     <admin-layout>
+      <template #header>
+        <h1 class="m-0">Roles & Permissions</h1>
+      </template>
       <section class="content">
         <div class="container-fluid">
           <div class="row">
@@ -21,66 +24,68 @@
                       style="letter-spacing: 0.1em"
                       @click="openModal"
                     >
-                      create
+                      <i class="fas fa-plus-circle"></i>
                     </button>
                   </div>
                 </div>
-                <div class="card-body table-responsive p-0">
-                  <div class="table table-hover text-nowrap">
-                    <thead>
-                      <tr>
-                        <th class="text-capitalize">Role Name</th>
-                        <th class="text-capitalize">Permissions</th>
-                        <th class="text-capitalize">Created</th>
-                        <th
-                          class="text-capitalize text-right"
-                          v-if="
-                            $page.props.auth.hasRole.superAdmin ||
-                            $page.props.auth.hasRole.admin
-                          "
-                        >
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(role, index) in roles.data" :key="index">
-                        <td class="text-capitalize">{{ role.name }}</td>
-                        <td class="text-capitalize">
-                          <div class="d-flex flex-column">
-                            <span
-                              v-for="(permission, index) in role.permissions"
-                              :key="index"
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                      <thead>
+                        <tr>
+                          <th class="text-capitalize">Role Name</th>
+                          <th class="text-capitalize">Permissions</th>
+                          <th class="text-capitalize">Created</th>
+                          <th
+                            class="text-capitalize text-right"
+                            v-if="
+                              $page.props.auth.hasRole.superAdmin ||
+                              $page.props.auth.hasRole.admin
+                            "
+                          >
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(role, index) in roles.data" :key="index">
+                          <td class="text-capitalize">{{ role.name }}</td>
+                          <td class="text-capitalize">
+                            <div class="d-flex flex-column">
+                              <span
+                                v-for="(permission, index) in role.permissions"
+                                :key="index"
+                              >
+                                {{ permission.name }}
+                              </span>
+                            </div>
+                          </td>
+                          <td>{{ role.created_at }}</td>
+                          <td
+                            class="text-right"
+                            v-if="
+                              $page.props.auth.hasRole.superAdmin ||
+                              $page.props.auth.hasRole.admin
+                            "
+                          >
+                            <button
+                              class="btn btn-success text-uppercase"
+                              style="letter-spacing: 0.1em"
+                              @click="editModal(role)"
                             >
-                              {{ permission.name }}
-                            </span>
-                          </div>
-                        </td>
-                        <td>{{ role.created_at }}</td>
-                        <td
-                          class="text-right"
-                          v-if="
-                            $page.props.auth.hasRole.superAdmin ||
-                            $page.props.auth.hasRole.admin
-                          "
-                        >
-                          <button
-                            class="btn btn-success text-uppercase"
-                            style="letter-spacing: 0.1em"
-                            @click="editModal(role)"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            class="btn btn-danger text-uppercase ml-1"
-                            style="letter-spacing: 0.1em"
-                            @click="deleteRole(role)"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
+                              <i class="far fa-edit"></i>
+                            </button>
+                            <button
+                              class="btn btn-danger text-uppercase ml-1"
+                              style="letter-spacing: 0.1em"
+                              @click="deleteRole(role)"
+                            >
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
                 <div class="card-footer clearfix">

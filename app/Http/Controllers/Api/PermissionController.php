@@ -1,19 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admins;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class PermissionController extends Controller
 {
-
-    public function __construct() {
-        $this->middleware(['role:super-admin|admin|moderator|developer']);
-    }
-    
     /**
      * Display a listing of the resource.
      *
@@ -21,9 +15,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admins/Permissions/Index',[ 
-            'permissions' => Permission::latest()->paginate(5)
-        ]);
+        return Permission::orderBy('created_at', 'DESC')->get();
     }
 
     /**
@@ -44,17 +36,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name'              =>              ['required', 'max:25', 'unique:permissions'],
-            'description'       =>              'required',
-        ]);
-        $permission = Permission::create([
-            'name'                  =>          $request->name,
-            'description'           =>          $request->description,
-            'guard_name'            =>          'web',
-        ]);
-
-        return back();
+        //
     }
 
     /**
@@ -88,11 +70,7 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        $permission->update([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
-        return back();
+        //
     }
 
     /**
@@ -103,13 +81,6 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        $permission->delete();
-        return back();
-    }
-
-    public function searchPermission(Request $request)
-    {
-        $data = Permission::where('name', 'LIKE','%'.$request->keyword.'%')->get();
-        return response()->json($data); 
+        //
     }
 }
