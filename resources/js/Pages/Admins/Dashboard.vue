@@ -62,7 +62,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3>{{ visitors }}</h3>
 
                 <p>Unique Visitors</p>
               </div>
@@ -225,7 +225,7 @@
 <script>
 import AdminLayout from "../../Layouts/AdminLayout.vue";
 export default {
-  props: ["new_users", "users"],
+  props: ["new_users", "users", "visitors"],
   components: {
     AdminLayout,
   },
