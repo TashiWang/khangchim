@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['role:super-admin|admin|moderator|developer']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::orderBy('created_at', 'DESC')->get();
+        return User::all();
     }
 
     /**

@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['role:super-admin|admin|moderator|developer']);
+    }
     /**
      * Display a listing of the resource.
      *

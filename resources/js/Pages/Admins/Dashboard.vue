@@ -229,10 +229,6 @@ export default {
   components: {
     AdminLayout,
   },
-
-  mounted() {
-    this.getUsers();
-  },
   methods: {},
 };
 </script>

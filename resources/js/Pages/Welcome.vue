@@ -327,7 +327,22 @@ export default defineComponent({
 
   methods: {
     logout() {
-      this.$inertia.post(route("logout"));
+      Swal.fire({
+        title: "Are you sure you want to log out?",
+        text: "You are about to exit the system",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$inertia.post(route("logout"), {
+            preserveScroll: true,
+          });
+        }
+      });
     },
   },
 });

@@ -74,7 +74,7 @@
                 class="spinner-border spinner-border-sm"
                 role="status"
               >
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden"></span>
               </div>
 
               Log in

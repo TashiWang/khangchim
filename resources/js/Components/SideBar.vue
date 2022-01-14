@@ -244,6 +244,11 @@
               <p>Gallery</p>
             </a>
           </li>
+
+          <li class="nav-item">
+            &nbsp;
+            <p class="text-white ml-4 text-capitalize">{{ $page.props.user.name }}</p>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
