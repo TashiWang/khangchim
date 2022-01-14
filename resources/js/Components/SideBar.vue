@@ -8,7 +8,7 @@
         class="brand-image img-circle elevation-3"
         style="opacity: 1"
       />
-      <span class="brand-text font-weight-bold text-capitalize">Khangchim</span>
+      <span class="brand-text font-weight-bold text-capitalize">Town Home</span>
     </a>
 
     <!-- Sidebar -->

@@ -24900,7 +24900,7 @@ var _hoisted_3 = ["src"];
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "brand-text font-weight-bold text-capitalize"
-}, "Khangchim", -1
+}, "Town Home", -1
 /* HOISTED */
 );
 
@@ -26296,7 +26296,7 @@ var _hoisted_5 = {
   "class": "navbar-nav me-auto"
 };
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Khangchim ");
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Town Home ");
 
 var _hoisted_7 = {
   "class": "navbar-nav align-items-baseline"
@@ -30375,7 +30375,7 @@ var _hoisted_1 = {
 };
 var _hoisted_2 = ["src"];
 
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Khangchim ");
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Town Home ");
 
 var _hoisted_4 = {
   key: 0,

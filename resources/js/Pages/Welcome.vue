@@ -12,7 +12,7 @@
           class="brand-image img-circle elevation-3"
           style="opacity: 1"
         />
-        Khangchim
+        Town Home
       </Link>
 
       <div v-if="canLogin" class="d-flex justify-content-end">

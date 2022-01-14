@@ -36,7 +36,7 @@
               :href="route('dashboard')"
               :active="route().current('dashboard')"
             >
-              Khangchim
+              Town Home
             </jet-nav-link>
           </ul>
 
