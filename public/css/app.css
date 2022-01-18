@@ -11771,6 +11771,44 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.bg-image {
+  background-image: url(/images/houses.svg?861f30a387b54331d70719ebe301eef3);
+  min-height: 600px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.container {
+  position: absolute;
+  margin-top: 20px;
+  max-width: 50px;
+  padding: 16px;
+  background-color: white;
+  border-radius: 0.2rem;
+}
+
+.css-19f84j9 {
+  font-weight: 700;
+  margin-top: 200px;
+  font-size: 48px;
+  line-height: 48px;
+  color: #0a0f1c;
+  text-align: center;
+  max-width: 340px;
+}
+
+.css-1v4pdp8 {
+  color: #454442;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  margin: 22px 0 38px;
+  text-align: center;
+  max-width: 275px;
+}
+
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -1,6 +1,6 @@
 <template>
   <app-layout title="Dashboard">
-    <welcome />
+    <!-- <welcome /> -->
   </app-layout>
 </template>
 
