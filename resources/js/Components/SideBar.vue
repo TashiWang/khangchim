@@ -8,7 +8,7 @@
         class="brand-image img-circle elevation-3"
         style="opacity: 1"
       />
-      <span class="brand-text font-weight-bold text-capitalize">Town Home</span>
+      <span class="brand-text font-weight-bold">noBroker</span>
     </a>
 
     <!-- Sidebar -->
@@ -30,65 +30,32 @@
             </a>
           </li>
 
-          <li class="nav-item">
+          <li v-if="$page.props.auth.hasRole.admin" class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-database"></i>
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+
               <p>
-                Master Management
+                Access
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li
-                class="nav-item"
-                v-if="
-                  $page.props.auth.hasRole.superAdmin ||
-                  $page.props.auth.hasRole.admin ||
-                  $page.props.auth.hasRole.moderator ||
-                  $page.props.auth.hasRole.developer
-                "
-              >
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Admins</p>
+              <li class="nav-item">
+                <a :href="route('admin.landlords.index')" class="nav-link">
+                  <i class="nav-icon fas fa-user-secret"></i>
+                  <p>Landlords</p>
                 </a>
               </li>
-              <li
-                class="nav-item"
-                v-if="
-                  $page.props.auth.hasRole.superAdmin ||
-                  $page.props.auth.hasRole.admin ||
-                  $page.props.auth.hasRole.moderator
-                "
-              >
+              <li class="nav-item">
                 <a :href="route('admin.users.index')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="nav-icon fas fa-users"></i>
                   <p>Users</p>
                 </a>
               </li>
-              <li
-                class="nav-item"
-                v-if="
-                  $page.props.auth.hasRole.superAdmin ||
-                  $page.props.auth.hasRole.admin ||
-                  $page.props.auth.hasRole.moderator
-                "
-              >
+              <li class="nav-item">
                 <a :href="route('admin.roles.index')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="nav-icon fas fa-user-lock"></i>
                   <p>Roles</p>
-                </a>
-              </li>
-              <li
-                class="nav-item"
-                v-if="
-                  $page.props.auth.hasRole.superAdmin ||
-                  $page.props.auth.hasRole.admin
-                "
-              >
-                <a :href="route('admin.permissions.index')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Permissions</p>
                 </a>
               </li>
             </ul>
@@ -97,7 +64,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-adjust"></i>
               <p>
-                Other Transactions
+                Transactions
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -238,16 +205,12 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>Gallery</p>
-            </a>
-          </li>
 
           <li class="nav-item">
             &nbsp;
-            <p class="text-white ml-4 text-capitalize">{{ $page.props.user.name }}</p>
+            <p class="text-white ml-4 text-capitalize">
+              Hi! {{ $page.props.user.name }} &#128578;
+            </p>
           </li>
         </ul>
       </nav>

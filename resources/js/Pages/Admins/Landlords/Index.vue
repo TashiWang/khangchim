@@ -1,41 +1,23 @@
 <template>
   <div>
     <admin-layout>
-      <template #header>
-        <h1 class="m-0">Permissions</h1>
-      </template>
       <section class="content">
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <div class="d-flex justify-content-end">
-                    <div class="col-xs-4 mr-2">
-                      <input
-                        v-model="searchTerm"
-                        type="search"
-                        placeholder="Search..."
-                        class="form-control"
-                      />
-                    </div>
+                  <h3 class="card-title">Landlords</h3>
 
-                    <div
-                      class="card-tools"
-                      v-if="
-                        $page.props.auth.hasRole.superAdmin ||
-                        $page.props.auth.hasRole.admin
-                      "
+                  <div class="card-tools" v-if="$page.props.auth.hasRole.admin">
+                    <button
+                      type="button"
+                      class="btn btn-info text-uppercase"
+                      style="letter-spacing: 0.1em"
+                      @click="openModal"
                     >
-                      <button
-                        type="button"
-                        class="btn btn-info text-uppercase"
-                        style="letter-spacing: 0.1em"
-                        @click="openModal"
-                      >
-                        <i class="fas fa-plus-circle"></i>
-                      </button>
-                    </div>
+                      <i class="fas fa-plus-circle"></i>
+                    </button>
                   </div>
                 </div>
                 <div class="card-body p-0">
@@ -43,15 +25,13 @@
                     <table class="table table-hover text-nowrap">
                       <thead>
                         <tr>
-                          <th class="text-capitalize">Permissions Name</th>
-                          <th class="text-capitalize">Description</th>
-                          <th class="text-capitalize">Created</th>
+                          <th class="text-capitalize">Name</th>
+                          <th class="text-capitalize">Email</th>
+                          <th class="text-capitalize">Created At</th>
+                          <th class="text-capitalize">Last updated at</th>
                           <th
                             class="text-capitalize text-right"
-                            v-if="
-                              $page.props.auth.hasRole.superAdmin ||
-                              $page.props.auth.hasRole.admin
-                            "
+                            v-if="$page.props.auth.hasRole.admin"
                           >
                             Actions
                           </th>
@@ -59,30 +39,28 @@
                       </thead>
                       <tbody>
                         <tr
-                          v-for="(permission, index) in permissions.data"
+                          v-for="(user, index) in landlords.data"
                           :key="index"
                         >
-                          <td class="text-capitalize">{{ permission.name }}</td>
-                          <td>{{ permission.description }}</td>
-                          <td>{{ permission.created_at }}</td>
+                          <td class="text-capitalize">{{ user.name }}</td>
+                          <td>{{ user.email }}</td>
+                          <td>{{ user.created_at }}</td>
+                          <td>{{ user.updated_at }}</td>
                           <td
                             class="text-right"
-                            v-if="
-                              $page.props.auth.hasRole.superAdmin ||
-                              $page.props.auth.hasRole.admin
-                            "
+                            v-if="$page.props.auth.hasRole.admin"
                           >
                             <button
                               class="btn btn-success text-uppercase"
                               style="letter-spacing: 0.1em"
-                              @click="editModal(permission)"
+                              @click="editModal(user)"
                             >
                               <i class="far fa-edit"></i>
                             </button>
                             <button
                               class="btn btn-danger text-uppercase ml-1"
                               style="letter-spacing: 0.1em"
-                              @click="deletePermission(permission)"
+                              @click="deleteLandlord(user)"
                             >
                               <i class="fas fa-trash"></i>
                             </button>
@@ -93,7 +71,7 @@
                   </div>
                 </div>
                 <div class="card-footer clearfix">
-                  <pagination :links="permissions.links"></pagination>
+                  <pagination :links="landlords.links"></pagination>
                 </div>
               </div>
             </div>
@@ -116,22 +94,16 @@
               </button>
             </div>
             <div class="modal-body overflow-hidden">
-              <div class="h4">
-                <span
-                  >Preview:
-                  <span class="text-capitalize">{{ form.name }}</span></span
-                >
-              </div>
               <div class="card card-primary">
                 <form @submit.prevent="checkMode">
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="permission" class="h4">Permission Name</label>
+                      <label for="user" class="h4">Landlord Name</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="permission"
-                        placeholder="Permission Name"
+                        id="user"
+                        placeholder="Landlord Name"
                         v-model="form.name"
                         :class="{
                           'is-invalid': form.errors.name,
@@ -148,25 +120,25 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="permission" class="h4">Description</label>
-                      <textarea
-                        type="text"
+                      <label for="user" class="h4">Email</label>
+                      <input
+                        type="email"
                         class="form-control"
-                        id="permission"
-                        placeholder="Description"
-                        v-model="form.description"
+                        id="user"
+                        placeholder="Landlord Name"
+                        v-model="form.email"
                         :class="{
-                          'is-invalid': form.errors.description,
+                          'is-invalid': form.errors.name,
                         }"
                         autofocus="autofocus"
                         autocomplete="off"
-                      ></textarea>
+                      />
                     </div>
                     <div
                       class="invalid-feedback mb-3"
-                      :class="{ 'd-block': form.errors.description }"
+                      :class="{ 'd-block': form.errors.name }"
                     >
-                      {{ form.errors.description }}
+                      {{ form.errors.name }}
                     </div>
                   </div>
 
@@ -183,9 +155,7 @@
                       type="submit"
                       class="btn btn-info text-uppercase"
                       style="letter-spacing: 0.1em"
-                      :disabled="
-                        !form.name || !form.description || form.processing
-                      "
+                      :disabled="!form.name || !form.email || form.processing"
                     >
                       <div
                         v-show="form.processing"
@@ -206,34 +176,27 @@
     </admin-layout>
   </div>
 </template>
-
 <script>
 import AdminLayout from "../../../Layouts/AdminLayout.vue";
 import Pagination from "@/Components/Pagination";
 
 export default {
-  props: ["permissions"],
-  components: {
-    AdminLayout,
-    Pagination,
-  },
+  props: ["landlords"],
+  components: { AdminLayout, Pagination },
   data() {
     return {
-      searchTerm: "",
       editedIndex: -1,
       editMode: false,
       form: this.$inertia.form({
         id: "",
         name: "",
-        description: "",
+        email: "",
       }),
     };
   },
   computed: {
     formTitle() {
-      return this.editedIndex === -1
-        ? "Create New Permission"
-        : "Edit Permission";
+      return this.editedIndex === -1 ? "Create New Landlord" : "Edit Landlord";
     },
 
     btnText() {
@@ -241,46 +204,48 @@ export default {
     },
     checkMode() {
       return this.editMode === false
-        ? this.createPermission()
-        : this.editPermission();
+        ? this.createLandlord()
+        : this.editLandlord();
     },
   },
   methods: {
     openModal() {
+      this.form.clearErrors();
       this.editMode = false;
       this.form.reset();
       this.editedIndex = -1;
       $("#modal-lg").modal("show");
     },
     closeModal() {
+      this.form.clearErrors();
       this.editMode = false;
       this.form.reset();
       $("#modal-lg").modal("hide");
     },
-    editModal(permission) {
+    editModal(user) {
       this.editMode = true;
       $("#modal-lg").modal("show");
-      this.editedIndex = this.permissions.data.indexOf(permission);
-      this.form.name = permission.name;
-      this.form.id = permission.id;
-      this.form.description = permission.description;
+      this.editedIndex = this.landlords.data.indexOf(user);
+      this.form.name = user.name;
+      this.form.email = user.email;
+      this.form.id = user.id;
     },
-    createPermission() {
-      this.form.post(this.route("admin.permissions.store"), {
+    createLandlord() {
+      this.form.post(this.route("admin.landlords.store"), {
         preserveScroll: true,
         onSuccess: () => {
           this.form.reset();
           this.closeModal();
           Toast.fire({
             icon: "success",
-            title: "New permission created!",
+            title: "New user created!",
           });
         },
       });
     },
-    editPermission() {
+    editLandlord() {
       this.form.patch(
-        this.route("admin.permissions.update", this.form.id, this.form),
+        this.route("admin.landlords.update", this.form.id, this.form),
         {
           preserveScroll: true,
           onSuccess: () => {
@@ -288,13 +253,13 @@ export default {
             this.closeModal();
             Toast.fire({
               icon: "success",
-              title: "Permission has been updated successfully!",
+              title: "Landlord has been updated successfully!",
             });
           },
         }
       );
     },
-    deletePermission(permission) {
+    deleteLandlord(user) {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -305,19 +270,16 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.form.delete(
-            this.route("admin.permissions.destroy", permission),
-            {
-              preserveScroll: true,
-              onSuccess: () => {
-                Swal.fire(
-                  "Deleted!",
-                  "Permission has been deleted successfully.",
-                  "success"
-                );
-              },
-            }
-          );
+          this.form.delete(this.route("admin.landlords.destroy", user), {
+            preserveScroll: true,
+            onSuccess: () => {
+              Swal.fire(
+                "Deleted!",
+                "Landlord has been deleted successfully.",
+                "success"
+              );
+            },
+          });
         }
       });
     },

@@ -1,23 +1,15 @@
 <template>
   <div>
     <admin-layout>
-      <template #header>
-        <h1 class="m-0">Roles & Permissions</h1>
-      </template>
       <section class="content">
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Roles & Permissons</h3>
-                  <div
-                    class="card-tools"
-                    v-if="
-                      $page.props.auth.hasRole.superAdmin ||
-                      $page.props.auth.hasRole.admin
-                    "
-                  >
+                  <h3 class="card-title">User Roles</h3>
+
+                  <div class="card-tools" v-if="$page.props.auth.hasRole.admin">
                     <button
                       type="button"
                       class="btn btn-info text-uppercase"
@@ -34,14 +26,11 @@
                       <thead>
                         <tr>
                           <th class="text-capitalize">Role Name</th>
-                          <th class="text-capitalize">Permissions</th>
-                          <th class="text-capitalize">Created</th>
+                          <th class="text-capitalize">Created At</th>
+                          <th class="text-capitalize">Last updated at</th>
                           <th
                             class="text-capitalize text-right"
-                            v-if="
-                              $page.props.auth.hasRole.superAdmin ||
-                              $page.props.auth.hasRole.admin
-                            "
+                            v-if="$page.props.auth.hasRole.admin"
                           >
                             Actions
                           </th>
@@ -50,23 +39,11 @@
                       <tbody>
                         <tr v-for="(role, index) in roles.data" :key="index">
                           <td class="text-capitalize">{{ role.name }}</td>
-                          <td class="text-capitalize">
-                            <div class="d-flex flex-column">
-                              <span
-                                v-for="(permission, index) in role.permissions"
-                                :key="index"
-                              >
-                                {{ permission.name }}
-                              </span>
-                            </div>
-                          </td>
                           <td>{{ role.created_at }}</td>
+                          <td>{{ role.updated_at }}</td>
                           <td
                             class="text-right"
-                            v-if="
-                              $page.props.auth.hasRole.superAdmin ||
-                              $page.props.auth.hasRole.admin
-                            "
+                            v-if="$page.props.auth.hasRole.admin"
                           >
                             <button
                               class="btn btn-success text-uppercase"
@@ -112,12 +89,6 @@
               </button>
             </div>
             <div class="modal-body overflow-hidden">
-              <div class="h4">
-                <span
-                  >Preview:
-                  <span class="text-capitalize">{{ form.name }}</span></span
-                >
-              </div>
               <div class="card card-primary">
                 <form @submit.prevent="checkMode">
                   <div class="card-body">
@@ -141,27 +112,6 @@
                       :class="{ 'd-block': form.errors.name }"
                     >
                       {{ form.errors.name }}
-                    </div>
-
-                    <div class="form-group">
-                      <label for="permissions" class="h4">Permissions</label>
-                      <multiselect
-                        v-model="form.permissions"
-                        :options="permissionOptions"
-                        :multiple="true"
-                        :taggable="true"
-                        placeholder="Choose permission(s)"
-                        @addPermissions="addPermissions"
-                        label="name"
-                        track-by="id"
-                        aria-required="true"
-                      ></multiselect>
-                    </div>
-                    <div
-                      class="invalid-feedback"
-                      :class="{ 'd-block': form.errors.name }"
-                    >
-                      {{ form.errors.permissions }}
                     </div>
                   </div>
 
@@ -205,7 +155,7 @@ import AdminLayout from "../../../Layouts/AdminLayout.vue";
 import Pagination from "@/Components/Pagination";
 
 export default {
-  props: ["roles", "permissions"],
+  props: ["roles"],
   components: {
     AdminLayout,
     Pagination,
@@ -217,10 +167,7 @@ export default {
       form: this.$inertia.form({
         id: "",
         name: "",
-        permissions: [],
       }),
-
-      permissionOptions: this.permissions,
     };
   },
   computed: {
@@ -236,13 +183,6 @@ export default {
     },
   },
   methods: {
-    addPermissions(newPermission) {
-      let permission = {
-        name: newPermission,
-      };
-      this.permissionOptions.push(permission);
-      this.form.permissions.push(permission);
-    },
     openModal() {
       this.form.clearErrors();
       this.editMode = false;
@@ -262,7 +202,6 @@ export default {
       this.editedIndex = this.roles.data.indexOf(role);
       this.form.name = role.name;
       this.form.id = role.id;
-      this.form.permissions = role.permissions;
     },
     createRole() {
       this.form.post(this.route("admin.roles.store"), {

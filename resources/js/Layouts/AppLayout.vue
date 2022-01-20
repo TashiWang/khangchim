@@ -36,7 +36,7 @@
               :href="route('dashboard')"
               :active="route().current('dashboard')"
             >
-              Town Home
+              noBroker
             </jet-nav-link>
           </ul>
 

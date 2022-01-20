@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admins;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Str;
 
-class UserController extends Controller
+class LandlordController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware(['role:admin|owner|developer']);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +19,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admins/Users/Index');
+        return DB::select("SELECT users.id, users.name, roles.name AS role_name, users.is_admin FROM users
+        left  JOIN model_has_roles ON users.id = model_has_roles.model_id
+        left  JOIN roles ON roles.id = model_has_roles.role_id WHERE roles.name = 'owner'");
     }
 
     /**
@@ -43,7 +42,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'name' => 'required',
             'email' => 'required | email',
@@ -51,18 +49,14 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
-        $user = DB::table('users')->insert([
+        return User::create([
             'name' => $request->name,
             'email' => $request->email,
             'is_admin' => 1,
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'remember_token' => Str::random(10),
-        ]);
-
-        $user->assignRole($request->role);
-
-        return back();
+        ])->assignRole(Role::where('name', 'owner')->first());
     }
 
     /**
@@ -73,7 +67,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        Product::findOrFail($id);
     }
 
     /**
@@ -96,7 +90,16 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required | email',
+            'is_admin' => 'required',
+            'password' => 'required',
+        ]);
+
+        $user->update();
+
+        return $user;
     }
 
     /**
@@ -107,6 +110,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return response()->noContent();
     }
 }

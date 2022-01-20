@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware(['role:super-admin|admin|moderator|developer']);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +19,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        return DB::select("SELECT users.id, users.name, roles.name AS role_name FROM users
+        left  JOIN model_has_roles ON users.id = model_has_roles.model_id
+        left  JOIN roles ON roles.id = model_has_roles.role_id WHERE roles.name = 'user'");
     }
 
     /**
@@ -41,7 +42,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required | email',
+            'is_admin' => 'required',
+            'password' => 'required',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'is_admin' => 1,
+            'email_verified_at' => now(),
+            'password' => 'password',
+            'remember_token' => Str::random(10),
+        ]);
+
+        $user->assignRole(Role::where('id', 2)->first());
+
+        return back();
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\LandlordController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -37,9 +37,10 @@ Route::prefix('/user')->group(function () {
     Route::delete('/{id}', [UserController::class, 'destroy']);
 });
 
-Route::get('permissions', [PermissionController::class, 'index']);
-Route::prefix('/permission')->group(function () {
-    Route::post('/store', [PermissionController::class, 'store']);
-    Route::put('/{id}}', [PermissionController::class, 'update']);
-    Route::delete('/{id}', [PermissionController::class, 'destroy']);
+// LANDLORDS ROUTES
+Route::get('landlords', [LandlordController::class, 'index']);
+Route::prefix('/landlord')->group(function () {
+    Route::post('/store', [LandlordController::class, 'store']);
+    Route::put('/{id}', [LandlordController::class, 'update']);
+    Route::delete('/{id}', [LandlordController::class, 'destroy']);
 });

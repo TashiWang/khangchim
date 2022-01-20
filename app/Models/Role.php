@@ -15,7 +15,6 @@ use Spatie\Permission\Traits\RefreshesPermissionCache;
 
 class Role extends Model implements RoleContract
 {
-    use HasPermissions;
     use RefreshesPermissionCache;
 
     protected $guarded = ['id'];

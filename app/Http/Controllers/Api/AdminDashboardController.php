@@ -10,7 +10,7 @@ class AdminDashboardController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['role:super-admin|admin|moderator|developer']);
+        $this->middleware(['role:admin|owner|developer']);
     }
     /**
      * Display a listing of the resource.

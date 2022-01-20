@@ -13,7 +13,7 @@
               <div class="inner">
                 <h3>{{ users }}</h3>
 
-                <p>Users</p>
+                <p>Total Users</p>
               </div>
               <div class="icon">
                 <i class="fa fa-users" aria-hidden="true"></i>
@@ -28,9 +28,9 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3>{{ landlords }}</h3>
 
-                <p>Bounce Rate</p>
+                <p>Landlords</p>
               </div>
               <div class="icon">
                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -225,7 +225,7 @@
 <script>
 import AdminLayout from "../../Layouts/AdminLayout.vue";
 export default {
-  props: ["new_users", "users", "visitors"],
+  props: ["new_users", "users", "visitors", "landlords"],
   components: {
     AdminLayout,
   },

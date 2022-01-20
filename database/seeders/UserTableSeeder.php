@@ -26,9 +26,9 @@ class UserTableSeeder extends Seeder
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
             ]);
-            $role = Role::where('id', 5)->first();
-            $permission = Permission::where('name', 'N/A')->first();
-            $user->syncRoles($role)->syncPermissions($permission);
+            $role = Role::where('id', 4)->first();
+
+            $user->syncRoles($role);
         }
     }
 }
