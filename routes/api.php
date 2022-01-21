@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AreaController;
 use App\Http\Controllers\Api\LandlordController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
@@ -43,4 +44,12 @@ Route::prefix('/landlord')->group(function () {
     Route::post('/store', [LandlordController::class, 'store']);
     Route::put('/{id}', [LandlordController::class, 'update']);
     Route::delete('/{id}', [LandlordController::class, 'destroy']);
+});
+
+// AREA ROUTES
+Route::get('areas', [AreaController::class, 'index']);
+Route::prefix('/area')->group(function () {
+    Route::post('/store', [AreaController::class, 'store']);
+    Route::put('/{id}', [AreaController::class, 'update']);
+    Route::delete('/{id}', [AreaController::class, 'destroy']);
 });

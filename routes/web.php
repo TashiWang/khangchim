@@ -5,6 +5,7 @@ use App\Http\Controllers\Admins\LandlordController;
 use App\Http\Controllers\Admins\RoleController;
 use App\Http\Controllers\Admins\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Landlords\AreaController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,6 +40,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified', 
     Route::resource('users', UserController::class)->except(['create', 'show', 'edit']);
     Route::resource('roles', RoleController::class)->except(['create', 'show', 'edit']);
     Route::resource('landlords', LandlordController::class)->except(['create', 'show', 'edit']);
+    Route::resource('areas', AreaController::class)->except(['create', 'show', 'edit']);
+});
+
+Route::prefix('landlord')->name('landlord.')->middleware(['auth:sanctum', 'verified', 'role:owner'])->group(function () {
+
 });
 
 Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {

@@ -7,9 +7,9 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Landlords</h3>
+                  <h3 class="card-title">Areas</h3>
 
-                  <div class="card-tools" v-if="$page.props.auth.hasRole.admin">
+                  <div class="card-tools">
                     <button
                       type="button"
                       class="btn btn-info text-uppercase"
@@ -26,41 +26,28 @@
                       <thead>
                         <tr>
                           <th class="text-capitalize">Name</th>
-                          <th class="text-capitalize">Email</th>
-                          <th class="text-capitalize">Created At</th>
-                          <th class="text-capitalize">Last updated at</th>
-                          <th
-                            class="text-capitalize text-right"
-                            v-if="$page.props.auth.hasRole.admin"
-                          >
-                            Actions
-                          </th>
+                          <th class="text-capitalize">Created by</th>
+                          <th class="text-capitalize"> Creator email</th>
+                          <th class="text-capitalize text-right">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr
-                          v-for="(user, index) in landlords.data"
-                          :key="index"
-                        >
-                          <td class="text-capitalize">{{ user.name }}</td>
-                          <td>{{ user.email }}</td>
-                          <td>{{ user.created_at }}</td>
-                          <td>{{ user.updated_at }}</td>
-                          <td
-                            class="text-right"
-                            v-if="$page.props.auth.hasRole.admin"
-                          >
+                        <tr v-for="(area, id) in areas.data" :key="id">
+                          <td class="text-capitalize">{{ area.name }}</td>
+                          <td class="text-capitalize">{{ area.owner }}</td>
+                          <td>{{ area.owner_email }}</td>
+                          <td class="text-right">
                             <button
                               class="btn btn-success text-uppercase"
                               style="letter-spacing: 0.1em"
-                              @click="editModal(user)"
+                              @click="editModal(area)"
                             >
                               <i class="far fa-edit"></i>
                             </button>
                             <button
                               class="btn btn-danger text-uppercase ml-1"
                               style="letter-spacing: 0.1em"
-                              @click="deleteLandlord(user)"
+                              @click="deleteArea(area)"
                             >
                               <i class="fas fa-trash"></i>
                             </button>
@@ -71,7 +58,7 @@
                   </div>
                 </div>
                 <div class="card-footer clearfix">
-                  <pagination :links="landlords.links"></pagination>
+                  <pagination :links="areas.links"></pagination>
                 </div>
               </div>
             </div>
@@ -98,35 +85,13 @@
                 <form @submit.prevent="checkMode">
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="user" class="h4">Landlord Name</label>
+                      <label for="area" class="h4">Area Name</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="user"
-                        placeholder="name"
+                        id="area"
+                        placeholder="area"
                         v-model="form.name"
-                        :class="{
-                          'is-invalid': form.errors.name,
-                        }"
-                        autofocus="autofocus"
-                        autocomplete="off"
-                      />
-                    </div>
-                    <div
-                      class="invalid-feedback mb-3"
-                      :class="{ 'd-block': form.errors.name }"
-                    >
-                      {{ form.errors.name }}
-                    </div>
-
-                    <div class="form-group">
-                      <label for="user" class="h4">Email</label>
-                      <input
-                        type="email"
-                        class="form-control"
-                        id="user"
-                        placeholder="email"
-                        v-model="form.email"
                         :class="{
                           'is-invalid': form.errors.name,
                         }"
@@ -155,7 +120,7 @@
                       type="submit"
                       class="btn btn-info text-uppercase"
                       style="letter-spacing: 0.1em"
-                      :disabled="!form.name || !form.email || form.processing"
+                      :disabled="!form.name || form.processing"
                     >
                       <div
                         v-show="form.processing"
@@ -176,13 +141,17 @@
     </admin-layout>
   </div>
 </template>
+
 <script>
 import AdminLayout from "../../../Layouts/AdminLayout.vue";
 import Pagination from "@/Components/Pagination";
 
 export default {
-  props: ["landlords"],
-  components: { AdminLayout, Pagination },
+  props: ["areas"],
+  components: {
+    AdminLayout,
+    Pagination,
+  },
   data() {
     return {
       editedIndex: -1,
@@ -190,22 +159,20 @@ export default {
       form: this.$inertia.form({
         id: "",
         name: "",
-        email: "",
+        user_id: "",
       }),
     };
   },
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "Create New Landlord" : "Edit Landlord";
+      return this.editedIndex === -1 ? "Create New Role" : "Edit Role";
     },
 
     btnText() {
       return this.editedIndex === -1 ? "Create" : "Edit";
     },
     checkMode() {
-      return this.editMode === false
-        ? this.createLandlord()
-        : this.editLandlord();
+      return this.editMode === false ? this.createArea() : this.editRole();
     },
   },
   methods: {
@@ -222,30 +189,30 @@ export default {
       this.form.reset();
       $("#modal-lg").modal("hide");
     },
-    editModal(user) {
+    editModal(area) {
       this.editMode = true;
       $("#modal-lg").modal("show");
-      this.editedIndex = this.landlords.data.indexOf(user);
-      this.form.name = user.name;
-      this.form.email = user.email;
-      this.form.id = user.id;
+      this.editedIndex = this.areas.data.indexOf(area);
+      this.form.id = area.id;
+      this.form.name = area.name;
+      this.form.user_id = area.user_id;
     },
-    createLandlord() {
-      this.form.post(this.route("admin.landlords.store"), {
+    createArea() {
+      this.form.post(this.route("admin.areas.store"), {
         preserveScroll: true,
         onSuccess: () => {
           this.form.reset();
           this.closeModal();
           Toast.fire({
             icon: "success",
-            title: "New user created!",
+            title: "New area created!",
           });
         },
       });
     },
-    editLandlord() {
+    editRole() {
       this.form.patch(
-        this.route("admin.landlords.update", this.form.id, this.form),
+        this.route("admin.areas.update", this.form.id, this.form),
         {
           preserveScroll: true,
           onSuccess: () => {
@@ -253,13 +220,13 @@ export default {
             this.closeModal();
             Toast.fire({
               icon: "success",
-              title: "Landlord has been updated successfully!",
+              title: "Role has been updated successfully!",
             });
           },
         }
       );
     },
-    deleteLandlord(user) {
+    deleteArea(area) {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -270,12 +237,12 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.form.delete(this.route("admin.landlords.destroy", user), {
+          this.form.delete(this.route("admin.areas.destroy", area), {
             preserveScroll: true,
             onSuccess: () => {
               Swal.fire(
                 "Deleted!",
-                "Landlord has been deleted successfully.",
+                "Role has been deleted successfully.",
                 "success"
               );
             },

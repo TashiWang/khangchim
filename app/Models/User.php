@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return Auth::user()->getAllPermissions()->pluck('name');
     }
+
+    public function areas()
+    {
+        return $this->hasMany(Area::class);
+    }
 }
