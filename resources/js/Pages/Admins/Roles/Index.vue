@@ -78,7 +78,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">{{ formTitle }}</h4>
+              <h6 class="modal-title">{{ formTitle }}</h6>
               <button
                 type="button"
                 class="close"
@@ -93,7 +93,7 @@
                 <form @submit.prevent="checkMode">
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="role" class="h4">Role Name</label>
+                      <label for="role" class="h6">Role Name</label>
                       <input
                         type="text"
                         class="form-control"

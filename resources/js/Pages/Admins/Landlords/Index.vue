@@ -9,15 +9,33 @@
                 <div class="card-header">
                   <h3 class="card-title">Landlords</h3>
 
-                  <div class="card-tools" v-if="$page.props.auth.hasRole.admin">
-                    <button
-                      type="button"
-                      class="btn btn-info text-uppercase"
-                      style="letter-spacing: 0.1em"
-                      @click="openModal"
+                  <div class="d-flex justify-content-end">
+                    <div class="input-group mr-2 col-6">
+                      <input
+                        type="search"
+                        class="form-control"
+                        placeholder="Search for..."
+                        aria-describedby="basic-addon2"
+                      />
+                      <div class="input-group-append">
+                        <button class="btn btn-info" type="button">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="card-tools"
+                      v-if="$page.props.auth.hasRole.admin"
                     >
-                      <i class="fas fa-plus-circle"></i>
-                    </button>
+                      <button
+                        type="button"
+                        class="btn btn-info text-uppercase"
+                        style="letter-spacing: 0.1em"
+                        @click="openModal"
+                      >
+                        <i class="fas fa-plus-circle"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div class="card-body p-0">
@@ -25,10 +43,15 @@
                     <table class="table table-hover text-nowrap">
                       <thead>
                         <tr>
-                          <th class="text-capitalize">Name</th>
-                          <th class="text-capitalize">Email</th>
-                          <th class="text-capitalize">Created At</th>
-                          <th class="text-capitalize">Last updated at</th>
+                          <th class="text-capitalize">
+                            Name
+                            <span>&uarr;</span><span>&darr;</span>
+                          </th>
+                          <th class="text-capitalize">
+                            Email <span>&uarr;</span><span>&darr;</span>
+                          </th>
+                          <th class="text-capitalize">Phone number</th>
+                          <th class="text-capitalize">CID number</th>
                           <th
                             class="text-capitalize text-right"
                             v-if="$page.props.auth.hasRole.admin"
@@ -44,8 +67,8 @@
                         >
                           <td class="text-capitalize">{{ user.name }}</td>
                           <td>{{ user.email }}</td>
-                          <td>{{ user.created_at }}</td>
-                          <td>{{ user.updated_at }}</td>
+                          <td>{{ user.contact }}</td>
+                          <td>{{ user.cid_number }}</td>
                           <td
                             class="text-right"
                             v-if="$page.props.auth.hasRole.admin"
@@ -83,7 +106,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">{{ formTitle }}</h4>
+              <h6 class="modal-title">{{ formTitle }}</h6>
               <button
                 type="button"
                 class="close"
@@ -97,14 +120,60 @@
               <div class="card card-primary">
                 <form @submit.prevent="checkMode">
                   <div class="card-body">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="user" class="h6">Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="user"
+                          placeholder="Name"
+                          v-model="form.name"
+                          :class="{
+                            'is-invalid': form.errors.name,
+                          }"
+                          autofocus="autofocus"
+                          autocomplete="off"
+                        />
+                      </div>
+                      <div
+                        class="invalid-feedback mb-3"
+                        :class="{ 'd-block': form.errors.name }"
+                      >
+                        {{ form.errors.name }}
+                      </div>
+
+                      <div class="form-group col-md-6">
+                        <label for="user" class="h6">Email</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="user"
+                          placeholder="example@gmail.com"
+                          v-model="form.email"
+                          :class="{
+                            'is-invalid': form.errors.name,
+                          }"
+                          autofocus="autofocus"
+                          autocomplete="off"
+                        />
+                      </div>
+                      <div
+                        class="invalid-feedback mb-3"
+                        :class="{ 'd-block': form.errors.name }"
+                      >
+                        {{ form.errors.name }}
+                      </div>
+                    </div>
+
                     <div class="form-group">
-                      <label for="user" class="h4">Landlord Name</label>
+                      <label for="user" class="h6">Phone number</label>
                       <input
-                        type="text"
+                        type="phone"
                         class="form-control"
                         id="user"
-                        placeholder="name"
-                        v-model="form.name"
+                        placeholder="Contact number"
+                        v-model="form.contact"
                         :class="{
                           'is-invalid': form.errors.name,
                         }"
@@ -120,13 +189,13 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="user" class="h4">Email</label>
+                      <label for="user" class="h6">CID number</label>
                       <input
-                        type="email"
+                        type="text"
                         class="form-control"
                         id="user"
-                        placeholder="email"
-                        v-model="form.email"
+                        placeholder="CID number"
+                        v-model="form.cid_number"
                         :class="{
                           'is-invalid': form.errors.name,
                         }"
@@ -155,7 +224,13 @@
                       type="submit"
                       class="btn btn-info text-uppercase"
                       style="letter-spacing: 0.1em"
-                      :disabled="!form.name || !form.email || form.processing"
+                      :disabled="
+                        !form.name ||
+                        !form.email ||
+                        !form.contact ||
+                        !form.cid_number ||
+                        form.processing
+                      "
                     >
                       <div
                         v-show="form.processing"
@@ -191,6 +266,8 @@ export default {
         id: "",
         name: "",
         email: "",
+        contact: "",
+        cid_number: "",
       }),
     };
   },
@@ -209,6 +286,7 @@ export default {
     },
   },
   methods: {
+    
     openModal() {
       this.form.clearErrors();
       this.editMode = false;
@@ -229,6 +307,8 @@ export default {
       this.form.name = user.name;
       this.form.email = user.email;
       this.form.id = user.id;
+      this.form.contact = user.contact;
+      this.form.cid_number = user.cid_number;
     },
     createLandlord() {
       this.form.post(this.route("admin.landlords.store"), {

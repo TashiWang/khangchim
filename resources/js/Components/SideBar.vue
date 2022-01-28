@@ -71,14 +71,14 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a :href="route('admin.areas.index')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fa fa-map-marker nav-icon" aria-hidden="true"></i>
                   <p>Areas</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Transactions2</p>
+                <a :href="route('admin.houses.index')" class="nav-link">
+                  <i class="fa fa-building nav-icon" aria-hidden="true"></i>
+                  <p>Apartments</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -207,10 +207,10 @@
           </li>
 
           <li class="nav-item">
-            &nbsp;
-            <p class="text-white ml-4 text-capitalize">
-              Hi! {{ $page.props.user.name }} &#128578;
-            </p>
+            <a :href="route('profile.show')" class="nav-link">
+              <i class="nav-icon fa fa-cog"></i>
+              <p>Settings</p>
+            </a>
           </li>
         </ul>
       </nav>

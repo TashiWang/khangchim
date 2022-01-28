@@ -2,28 +2,36 @@
 
 namespace App\Models;
 
-use App\Models\Area;
-use App\Models\User;
 use App\Traits\MultitenantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Area extends Model
+class House extends Model
 {
     use HasFactory;
     use MultitenantTrait;
 
     protected $fillable = [
-        'name',
+        'address',
+        'area_id',
         'user_id',
+        'contact',
+        'number_of_room',
+        'number_of_toilet',
+        'number_of_balcony',
+        'rent',
+        'featured_image',
+        'images',
+        'images',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function houses()
+
+    public function area()
     {
-        return $this->hasMany(House::class);
+        return $this->belongsTo(Area::class, 'area_id');
     }
 }

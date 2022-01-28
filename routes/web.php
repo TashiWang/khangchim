@@ -9,6 +9,7 @@ use App\Http\Controllers\Landlords\AreaController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use \App\Http\Controllers\Landlords\HouseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified', 
     Route::resource('roles', RoleController::class)->except(['create', 'show', 'edit']);
     Route::resource('landlords', LandlordController::class)->except(['create', 'show', 'edit']);
     Route::resource('areas', AreaController::class)->except(['create', 'show', 'edit']);
+    Route::resource('houses', HouseController::class)->except(['create', 'show', 'edit']);
+    Route::get('', function() {
+        return Inertia::render('Admins/Profile/Show');
+    });
 });
 
 Route::prefix('landlord')->name('landlord.')->middleware(['auth:sanctum', 'verified', 'role:owner'])->group(function () {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AreaResource extends JsonResource
@@ -14,13 +13,12 @@ class AreaResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public static $wrap = null;
 
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
-            'user' => new UserResource($this->user),
         ];
     }
 }

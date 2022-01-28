@@ -27,6 +27,7 @@ class RoleSeeder extends Seeder
         $admin = User::create([
             'name' => 'admin',
             'is_admin' => 1,
+            'contact' => '77777777',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
@@ -34,9 +35,10 @@ class RoleSeeder extends Seeder
         ]);
 
         $owner = User::create([
-            'name' => 'owner',
+            'name' => 'Tashi Wangchuk',
             'is_admin' => 1,
-            'email' => 'owner@admin.com',
+            'contact' => '77777777',
+            'email' => 'tashiw145@admin.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -45,6 +47,7 @@ class RoleSeeder extends Seeder
         $developer = User::create([
             'name' => 'developer',
             'is_admin' => 1,
+            'contact' => '77777777',
             'email' => 'developer@admin.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
@@ -54,6 +57,7 @@ class RoleSeeder extends Seeder
         $user = User::create([
             'name' => 'test',
             'is_admin' => 0,
+            'contact' => '77777777',
             'email' => 'test@test.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),

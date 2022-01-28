@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\User;
 use Auth;
-use DB;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -19,15 +18,19 @@ class AreaController extends Controller
      */
     public function index()
     {
+                
+        $areas = Area::all();
         return Inertia::render('Landlords/Areas/Index', [
-            'areas' => DB::table('areas')
+            'areas' => Area::with('user')
                 ->join('users', 'users.id', '=', 'areas.user_id')
                 ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
                 ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
                 ->select('areas.id', 'areas.name as name', 'users.name as owner', 'users.email as owner_email')
                 ->orderBy('areas.id')
                 ->paginate(5),
-        ]);
+
+        ]
+        );
     }
 
     /**
@@ -56,7 +59,7 @@ class AreaController extends Controller
 
             Area::create([
                 'name' => $request->name,
-                'user_id' => Auth::user()->id,
+                // 'user_id' => Auth::user()->id,
             ]);
 
             return back();

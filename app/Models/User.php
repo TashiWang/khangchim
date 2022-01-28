@@ -30,7 +30,10 @@ class User extends Authenticatable
         'name',
         'is_admin',
         'email',
+        'cid_number',
+        'contact',
         'password',
+
     ];
 
     /**
@@ -70,5 +73,10 @@ class User extends Authenticatable
     public function areas()
     {
         return $this->hasMany(Area::class);
+    }
+
+    public function houses()
+    {
+        return $this->hasMany(House::class);
     }
 }

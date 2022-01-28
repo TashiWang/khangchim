@@ -22,6 +22,16 @@
         </div>
 
         <div class="mb-3">
+          <jet-label for="contact" value="Phone #" />
+          <jet-input id="contact" type="contact" v-model="form.contact" required />
+        </div>
+
+        <div class="mb-3">
+          <jet-label for="cid_number" value="CID #" />
+          <jet-input id="cid_number" type="cid_number" v-model="form.cid_number" required />
+        </div>
+
+        <div class="mb-3">
           <jet-label for="password" value="Password" />
           <jet-input id="password" type="password" v-model="form.password" required autocomplete="new-password" />
         </div>
@@ -91,6 +101,8 @@ export default defineComponent({
         name: '',
         email: '',
         password: '',
+        contact: '',
+        cid_number: '',
         password_confirmation: '',
         terms: false,
       })

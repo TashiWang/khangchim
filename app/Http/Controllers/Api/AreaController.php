@@ -46,7 +46,7 @@ class AreaController extends Controller
      */
     public function show(Area $area)
     {
-        //
+        return $area;
     }
 
     /**
@@ -69,6 +69,7 @@ class AreaController extends Controller
      */
     public function destroy(Area $area)
     {
-        //
+        $area->delete();
+        return back();
     }
 }

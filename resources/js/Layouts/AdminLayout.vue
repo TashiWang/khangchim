@@ -2,7 +2,7 @@
   <div class="wrapper">
     <!-- Preloader -->
 
-    <div
+    <!-- <div
       class="preloader flex-column justify-content-center align-items-center"
     >
       <div
@@ -12,7 +12,7 @@
       >
         <span class="sr-only">Loading...</span>
       </div>
-    </div>
+    </div> -->
 
     <!-- Navbar -->
     <NavBar />

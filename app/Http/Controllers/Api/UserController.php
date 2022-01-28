@@ -19,9 +19,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        return DB::select("SELECT users.id, users.name, roles.name AS role_name FROM users
-        left  JOIN model_has_roles ON users.id = model_has_roles.model_id
-        left  JOIN roles ON roles.id = model_has_roles.role_id WHERE roles.name = 'user'");
+        return DB::table('users')
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->select('users.id', 'users.name', 'users.email', 'users.contact', 'users.cid_number')
+            ->where('roles.name', 'user')
+            ->orderBy('users.id')
+            ->get();
     }
 
     /**

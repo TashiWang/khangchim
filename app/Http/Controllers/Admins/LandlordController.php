@@ -15,6 +15,12 @@ use Inertia\Inertia;
 
 class LandlordController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['role:admin']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,8 +32,9 @@ class LandlordController extends Controller
             'landlords' => DB::table('users')
                 ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
                 ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
-                ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'users.updated_at')
+                ->select('users.id', 'users.name', 'users.email', 'users.contact', 'users.cid_number')
                 ->where('roles.name', 'owner')
+                ->orderBy('users.name')
                 ->paginate(4),
         ]);
     }
@@ -54,25 +61,26 @@ class LandlordController extends Controller
         if (auth()->user()->hasRole(['admin'])) {
             $this->validate($request, [
                 'name' => ['required'],
-                'email' => ['required', 'email'],
+                'email' => ['required', 'email', 'unique:users'],
+                'contact' => ['required', 'digits:8'],
+                'cid_number' => ['digits:11', 'unique:users'],
             ]);
-
             $hashed_password = Str::random(8);
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'is_admin' => 1,
+                'contact' => $request->contact,
+                'cid_number' => $request->cid_number,
                 'email_verified_at' => now(),
-                'password' => Hash::make($hashed_password), // $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi
+                'password' => Hash::make($hashed_password),
                 'remember_token' => Str::random(10),
 
             ])->assignRole(Role::where('name', 'owner')->first());
 
             // Prepare data for mail
-
             $email = $request->get('email');
             $name = $request->get('name');
-            $email = $request->get('email');
             $password = $hashed_password;
 
             $maildata = [
@@ -130,6 +138,8 @@ class LandlordController extends Controller
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
+                'contact' => $request->contact,
+                'cid_number' => $request->cid_number,
             ]);
 
             return back();
